@@ -1,175 +1,185 @@
-# 🤖 Realtime RAG-based Chatbot using ChromaDB, Mistral (GGUF), and Gemini API
+# 🚀 Realtime RAG-based Chatbot
 
-A full-stack Retrieval-Augmented Generation (RAG) based chatbot system powered by **ChromaDB**, **Mistral 7B (GGUF)** for local LLM inference, and **Gemini API** for document summarization. The project features a custom HTML/CSS frontend with support for dynamic PDF upload and chatbot querying.
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green?logo=fastapi)
+![ChromaDB](https://img.shields.io/badge/ChromaDB-VectorDB-orange?logo=chromadb)
+![Mistral](https://img.shields.io/badge/Mistral-7B-informational)
+![GeminiAPI](https://img.shields.io/badge/Gemini-API-yellow)
+
+A full-stack Retrieval-Augmented Generation (RAG) chatbot system using **ChromaDB**, **Mistral 7B (GGUF)** for local LLM inference, and **Gemini API** for document summarization. Features a custom HTML/CSS frontend with dynamic PDF upload and chatbot querying.
 
 ---
 
 ## 📁 Project Structure
 
-Realtime_ChatBot/
-
+```
+RealTime_RagchatBot/
 │
 ├── backend/
-
-│ ├── app.py # FastAPI backend API (serves chatbot) 
-│ ├── chain.py # Core RAG logic (embedding + LLM response)
-│ ├── ingest.py # Index and embed documents into ChromaDB
+│   ├── api.py         # FastAPI backend API (serves chatbot)
+│   ├── chain.py       # Core RAG logic (embedding + LLM response)
+│   ├── ingest.py      # Index and embed documents into ChromaDB
+│   └── chroma_db/     # ChromaDB persistent storage
 │
-│
-
 ├── data/
-
-│ └── pdfs/ # Initial PDF documents (ABB, Acer, Realme, etc.)
-│ └──chromadb/ # create embeddings and main database
-
-├── notebooks/
-
-│ ├── chromadb # Custom chatbot UI
-│ ├── experiments.ipynb # Tested and Debugging Code for chatbot
+│   ├── pdfs/          # Initial PDF documents
+│   ├── manuals/       # Additional manuals
+│   └── chroma_db/     # Vector DB for embeddings
 │
-├── uploads/ # Uploaded PDF files for custom queries
-├── models/ # Local Mistral model (.gguf format)
-├── requirements.txt # Python dependencies
-└── README.md # You are here!
+├── notebooks/         # Experiments and debugging
+├── enhanced_chat_app.html # Frontend UI
+├── requirements.txt   # Python dependencies
+└── README.md          # You are here!
+```
 
 ---
 
-## 💡 Features
+## ✨ Features
 
 - 📄 PDF ingestion and semantic chunking
-- 🧠 ChromaDB as vector database (persistent)
-- 💬 Local inference using **Mistral-7B-Instruct** `.gguf` via llama.cpp / ctransformers
-- ☁️ Gemini API for PDF summarization during upload
-- 🌐 FastAPI backend with REST endpoint
+- 🧠 ChromaDB as persistent vector database
+- 💬 Local inference using **Mistral-7B-Instruct** (.gguf) via llama.cpp/ctransformers
+- ☁️ Gemini API for PDF summarization
+- 🌐 FastAPI backend with REST endpoints
 - 🎨 Custom HTML/CSS frontend interface
-- 📎 Dynamic PDF Upload and Question Answering
+- 📎 Dynamic PDF upload and question answering
 
 ---
-##Working Website
 
-![alt text]({D4EE90C3-735E-4A64-A9DA-FA0432BB1D56}.png)
+## 🌐 Demo Screenshots
 
+![Chatbot UI]({D4EE90C3-735E-4A64-A9DA-FA0432BB1D56}.png)
+![PDF Upload]({34578643-271A-44CC-A4F2-E6932EF41F6F}.png)
+![Custom Query]({6F40EB12-E8D3-4172-A0B5-965CAB95F2AC}.png)
 
+> **You can add custom PDFs and ask questions about them!**
 
-![alt text]({34578643-271A-44CC-A4F2-E6932EF41F6F}.png)
-
-You Can Add Custom PDFs and ask questions on given PDFs
-
-![alt text]({6F40EB12-E8D3-4172-A0B5-965CAB95F2AC}.png)
-
-
+---
 
 ## ⚙️ Setup Instructions
 
-### 1. Clone the Repo
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/realtime-rag-chatbot.git
-cd realtime-rag-chatbot
+git clone https://github.com/Swarajsolanke/RealTime_RagchatBot.git
+cd RealTime_RagchatBot
+```
 
+### 2. Create and Activate Virtual Environment
 
-2. Create and Activate Virtual Environment
-
+```bash
 python -m venv rag_env
 rag_env\Scripts\activate   # Windows
 # source rag_env/bin/activate   # Linux/Mac
+```
 
-3. Install Requirements
+### 3. Install Requirements
 
+```bash
 pip install -r requirements.txt
+```
 
+### 4. Ingest and Index PDF Manuals
 
-🧠 Ingest and Index PDF Manuals
-
+```bash
 python backend/ingest.py
+```
+*This stores embeddings in persistent ChromaDB located in backend/chroma_db.*
 
-This stores embeddings in persistent ChromaDB located in backend/chromadb.
+### 5. Run the FastAPI Backend
 
-🚀 Run the FastAPI Backend
+```bash
+uvicorn backend.api:app --reload
+```
+Visit FastAPI docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
-uvicorn backend.app:app --reload
+### 6. Run the Frontend
 
-Visit FastAPI docs: http://localhost:8000/docs
+Simply open `enhanced_chat_app.html` in your browser.
 
-Run the Frontend (HTML/CSS)
+Or serve it with a static server:
 
-Simply open frontend/index.html in your browser.
-
-You can serve it with a static server like VSCode Live Server or Python's HTTP server:
-
-cd frontend
+```bash
 python -m http.server 5500
+```
 
-🔍 How it Works
-RAG Pipeline
-🧩 Embedding: all-MiniLM-L6-v2 from Sentence Transformers
+---
 
-📚 Storage: ChromaDB (persistent vector store)
+## 🔍 How it Works
 
-🤖 LLM: mistralai/Mistral-7B-Instruct-v0.1 in .gguf format via ctransformers
+**RAG Pipeline:**
+- 🧩 **Embedding:** `all-mpnet-base-v2` from Sentence Transformers
+- 📚 **Storage:** ChromaDB (persistent vector store)
+- 🤖 **LLM:** Mistral-7B-Instruct-v0.1 (.gguf) via ctransformers
+- 💬 **Response:** Top-k relevant chunks + query passed to LLM for generation
+- 📎 **Gemini API:** Used to summarize uploaded PDFs before ingestion
 
-💬 Response: Top-k relevant chunks + query passed to LLM for generation
+**PDF Upload + Summarization:**
+- Upload a PDF using the frontend
+- Gemini API extracts and summarizes content
+- Summary is embedded and added to ChromaDB
 
-📎 Gemini API: Used to summarize uploaded PDFs before ingestion
+---
 
-📤 PDF Upload + Gemini Summarization
-Upload a PDF using the Upload Button in the frontend.
+## 🧰 Tech Stack
 
-Gemini API extracts and summarizes content.
+| Component         | Tool / Library                        |
+|-------------------|---------------------------------------|
+| Embeddings        | sentence-transformers (mpnet/MiniLM)  |
+| Vector DB         | ChromaDB                              |
+| LLM Inference     | ctransformers + Mistral 7B (.gguf)    |
+| Summarization     | Google Gemini API                     |
+| Backend API       | FastAPI                               |
+| Frontend          | HTML + CSS                            |
 
-Summary is embedded and added to the ChromaDB vector store.
+---
 
+## 📦 Main Dependencies
 
+See `requirements.txt` for the full list. Key packages:
+- fastapi
+- uvicorn
+- chromadb
+- ctransformers
+- sentence-transformers
+- PyMuPDF
+- requests
+- openai
+- python-dotenv
 
-🧰 Tech Stack
-Component----	Tool / Library
-Embeddings---	sentence-transformers (MiniLM)
-Vector DB---	ChromaDB
-LLM Inference---	ctransformers with .gguf Mistral LLM
-Summarization---	Google Gemini API
-Backend API	FastAPI
-Frontend---	HTML + CSS
+---
 
-📦 Dependencies
-txt
-Copy
-Edit
-fastapi
-uvicorn
-chromadb
-ctransformers
-sentence-transformers
-PyMuPDF
-requests
-openai
-python-dotenv
+## ❗ Notes
 
-📌 Note: You must manually download the .gguf Mistral model and place it inside the models/ folder.
+- You must manually download the `.gguf` Mistral model and place it inside a `models/` folder at the project root.
+- Ensure the ChromaDB directory exists before querying.
+- Verify the Mistral model path in `chain.py` matches your setup.
 
+---
 
-❓ Sample Queries
+## 💡 Sample Queries
 
-“what is Tempreture Description of Realme buds?”
+- "What is the temperature description of Realme buds?"
+- "What is low water alarm?"
+- "How to reset a Dell Latitude laptop?"
 
-“What is low water alarm?”
+---
 
-“How to reset a Dell Latitude laptop?”
+## 🛠️ Troubleshooting
 
-🛠️ Troubleshooting
-✅ Make sure ChromaDB directory exists before querying.
+- ✅ Ensure ChromaDB directory exists before querying.
+- ✅ Verify Mistral .gguf model path is correct in `chain.py`.
+- ✅ Check tokenizer and generator are properly loaded with correct model path.
+- ✅ If UI freezes, check browser console for network errors.
 
-✅ Verify Mistral .gguf model path is correct in chain.py.
+---
 
-✅ Check tokenizer and generator are properly loaded with correct model path.
+## 🤝 Contact & Contributions
 
-✅ If UI freezes, check browser console for network errors.
+Made with by Swaraj  Solanke
 
-Contact
-Made with ❤️ by Parth Dhone
-
-For issues or suggestions, open a GitHub issue or email at "parthdhone53@gmail.com"
-
-Github Link:https://github.com/parthdhone/RagChatbot.git
+- For issues or suggestions, open a GitHub issue or email: **swarajsolanke02@gmail.com**
+- GitHub: [https://github.com/Swarajsolanke/RealTime_RagchatBot.git]
 
 
 
