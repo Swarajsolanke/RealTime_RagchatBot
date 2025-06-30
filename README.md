@@ -48,8 +48,13 @@ RealTime_RagchatBot/
 
 ## 🌐 Demo Screenshots
 
+
 ![Chatbot UI]({D4EE90C3-735E-4A64-A9DA-FA0432BB1D56}.png)
+
+
 ![PDF Upload]({34578643-271A-44CC-A4F2-E6932EF41F6F}.png)
+
+
 ![Custom Query]({6F40EB12-E8D3-4172-A0B5-965CAB95F2AC}.png)
 
 > **You can add custom PDFs and ask questions about them!**
